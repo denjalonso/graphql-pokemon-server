@@ -3,5 +3,5 @@
 ## Run
 
 ```
-$npx @axelhzf/graphql-pokemon-server
+$ npx @axelhzf/graphql-pokemon-server
 ```

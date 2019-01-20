@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const { ApolloServer } = require('apollo-server');
 const fs = require('fs');
 const pokemons = require('./pokemons');
@@ -6,7 +8,10 @@ const typeDefs = fs.readFileSync(`${__dirname}/schema.graphql`, 'utf-8');
 
 const resolvers = {
   Query: {
-    pokemons: (_, args) => pokemons.slice(args.offset || 0, (args.offset || 0) + args.limit),
+    pokemons: (_, args) => {
+      if (args.limit === undefined && args.offset === undefined) return pokemons;
+      return pokemons.slice(args.offset || 0, (args.offset || 0) + args.limit);
+    },
     pokemonById: (_, args) => pokemons.find(pokemon => pokemon.id === args.id),
     pokemonByName: (_, args ) => pokemons.find(pokemon => pokemon.name.toLowerCase() === args.name.toLowerCase())
   },
