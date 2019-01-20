@@ -1,11 +1,27 @@
-import 'babel-polyfill'; // eslint-disable-line import/no-extraneous-dependencies
+const { ApolloServer } = require('apollo-server');
+const fs = require('fs');
+const pokemons = require('./pokemons');
 
-import app from './app';
+const typeDefs = fs.readFileSync(`${__dirname}/schema.graphql`, 'utf-8');
 
-const PORT = 5000;
+const resolvers = {
+  Query: {
+    pokemons: (_, args) => pokemons.slice(args.offset || 0, (args.offset || 0) + args.limit),
+    pokemonById: (_, args) => pokemons.find(pokemon => pokemon.id === args.id),
+    pokemonByName: (_, args ) => pokemons.find(pokemon => pokemon.name.toLowerCase() === args.name.toLowerCase())
+  },
+  Pokemon: {
+    number: pokemon => parseInt(pokemon.id, 10),
+    image: pokemon => `https://img.pokemondb.net/artwork/${pokemon.name.toLowerCase().replace(/[&\\/\\\\#,+()$~%.'":*?<>{}]/g, '').replace(' ', '-')}.jpg`,
+    evolutions: pokemon => pokemon.evolutions || []
+  },
+  PokemonAttack: {
+    fast: pokemonAttack => pokemonAttack.fast || [],
+    special: pokemonAttack => pokemonAttack.special || []
+  }
+};
 
-(async() => {
-  await app.listen(PORT);
-
-  console.log(`GraphQL-Pokemon started on http://localhost:${PORT}/`);
-})();
+const server = new ApolloServer({ typeDefs, resolvers });
+server.listen().then(({ url }) => {
+  console.log(`🚀  Pokemon GraphQL server running at ${url}`);
+});

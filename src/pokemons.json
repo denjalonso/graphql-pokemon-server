@@ -4498,7 +4498,6 @@
     "maxHP": 600,
     "attacks": {
       "fast": [
-        {},
         {
           "name": "Zen Headbutt",
           "type": "Psychic",
@@ -5989,7 +5988,6 @@
     "maxHP": 1263,
     "attacks": {
       "fast": [
-        {},
         {
           "name": "Fury Cutter",
           "type": "Bug",
