@@ -1,7 +1,7 @@
 {
   "name": "@axelhzf/graphql-pokemon-server",
   "description": "Get information of a Pokémon with GraphQL",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "repository": "https://github.com/axelhzf/graphql-pokemon-server",
   "license": "MIT",
   "author": {
